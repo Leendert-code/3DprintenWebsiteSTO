@@ -1,0 +1,88 @@
+
+{% extends 'template.html' %}
+
+{% block title %}website{% endblock %}
+
+{% block content %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<div id="flash-messages">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <header>
+        <h1>{% block header %}Welkom, zo te zien ben je klaar om te printen{% endblock %}</h1>
+        <!-- Add navigation links or other header content here -->
+    </header>
+    <h1> Hier beneden kun je een keuze maken </h1>
+
+<div class="container">
+<!-- buiten box 1 -->
+<div class="box box1">
+    <div >
+        <img class="box1_img" src="{{ url_for('static', filename='img/creality_ender3.png') }}" alt="Creality ender 3">
+    </div> 
+    <div class="box1_in">
+
+        <p><b>Creality ender 3v2</b></p>
+        {% for button_id, CRprinter in CRprinters.items() %}
+            <form method="GET" action="javascript:void(0)" onsubmit="redirectToPrintenPage({{ button_id }}, '{{ CRprinter.address }}', '{{ CRprinter.user_api }}', '{{ CRprinter.poort }}')">
+                <button id="printerButton" type="submit">{{ CRprinter.merk }} printer {{ button_id }}</button><br>
+            </form>
+            <br>
+        {% endfor %}
+
+    </div>
+</div>
+<div class="box box1">
+    <div >
+        <img class="box1_img" src="{{ url_for('static', filename='img/Flsun_Q5.png') }}" alt="Creality ender 3">
+    </div> 
+    <div class="box1_in">
+        <p><b>Flsun Q5</b></p>
+        {% for button_id, FLprinter in FLprinters.items () %}
+        <form method="GET" action="javascript:void(0)" onsubmit="redirectToPrintenPage({{ button_id }})">
+            <button type="submit">{{FLprinter.merk}} printer {{ button_id }}</button><br>
+        </form>
+        <br>
+    {% endfor %}
+    </div>
+</div>
+
+</div>
+
+
+
+
+    {#{% comment %} <div class="box box1">
+        <div >
+            <img class="box1_img" src="{{ url_for('static', filename='img/creality_ender3.jpg') }}" alt="Creality ender 3">
+        </div> 
+        <div class="box1_in">
+    
+            <p>Flsun Q5</p>
+    
+    
+            <p>blabla</p>
+        </div>
+    </div>
+    <div class="box box1">
+        <div >
+            <img class="box1_img" src="{{ url_for('static', filename='img/creality_ender3.jpg') }}" alt="Creality ender 3">
+        </div> 
+        <div class="box1_in">
+    
+            <p>blablalalalala</p>
+    
+    
+            <p>blabla</p>
+        </div>
+    </div>
+    
+    </div> {% endcomment %}#}
+
+</html>
+
+{% endblock %}

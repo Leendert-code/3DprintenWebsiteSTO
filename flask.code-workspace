@@ -1,0 +1,39 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default",
+					"enableSsl": "Disabled"
+				},
+				"previewLimit": 50,
+				"server": "172.23.145.240",
+				"port": 3306,
+				"driver": "MariaDB",
+				"name": "3dprinten",
+				"database": "3dprinten",
+				"username": "gomarus",
+				"password": "G0marus"
+			},
+			{
+				"mysqlOptions": {
+					"authProtocol": "default",
+					"enableSsl": "Disabled"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "test3dprinten",
+				"database": "3dprinten",
+				"username": "Gomarus",
+				"password": "Gomarus.sto"
+			}
+		]
+	}
+}

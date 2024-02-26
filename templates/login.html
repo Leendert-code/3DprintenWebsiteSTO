@@ -1,0 +1,42 @@
+{% extends 'template.html' %}
+
+{% block title %}website{% endblock %}
+
+{% block content %}
+
+
+
+<div id="flash-messages">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+<body>
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+    
+        <div class="form-text">
+            <label for="username">Username:</label>
+        </div>
+        <div class="form">
+            {{ form.username }}
+        </div>
+    
+        <div class="form-text">
+            <label for="password">Password:</label>
+        </div>
+        <div class="form">
+            {{ form.password() }}
+        </div>
+
+        <div class="form-button">
+            {{ form.submit(class="form-submit") }}
+        </div>
+    </form>
+    
+
+{% endblock %}
+

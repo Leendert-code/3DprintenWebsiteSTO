@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+
+
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light mb-2">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navigatiebar">
+    
+                
+                {% if logged_in %}
+                <li>
+                    <a class="nav-link {% if request.path == url_for('index') %}active{% endif %}" aria-current="page" href="{{ url_for('home') }}">Home</a>
+                </li>     
+                    <li><a class="nav-link2 {% if request.path == url_for('logout') %}active{% endif %}" aria-current="page" href="{{ url_for('logout') }}">Uitloggen</a></li>
+                    <li><a class="nav-link2 ">Welkom {{ username }}</a></li>
+
+                {% else %}
+                <li>
+                    <a class="nav-link {% if request.path == url_for('index') %}active{% endif %}" aria-current="page" href="{{ url_for('index') }}">Home</a>
+                </li>  
+                    <li><a class="nav-link2 {% if request.path == url_for('login') %}active{% endif %}" aria-current="page" href="{{ url_for('login') }}">Inloggen</a></li>
+
+                {% endif %}
+    
+                {% if user_level == 0 or user_level == 5%}
+                    <li><a class="nav-link2 {% if request.path == url_for('admin_dashboard') %}active{% endif %}" aria-current="page" href="{{ url_for('admin_dashboard')}}">admin dashboard</a></li>
+                    <li><a class="nav-link2 {% if request.path == url_for('print_dashboard') %}active{% endif %}" aria-current="page" href="{{ url_for('print_dashboard')}}">print dashboard</a></li>
+                    {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+
+
+
+
+<main>
+    <!-- Content of the page goes here -->
+    {% block content %}{% endblock %}
+</main>
+
+
+</body>
+<footer>
+    <!-- Add footer content here -->
+    &copy; 2024 <br>
+    gemaakt door Leendert Hakvoort :)
+</footer>
+</html>

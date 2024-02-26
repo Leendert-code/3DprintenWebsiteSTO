@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS printers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    printerid VARCHAR(255) NOT NULL, 
+    merk VARCHAR(255) NOT NULL, 
+    naam VARCHAR(255) NOT NULL,
+    adres VARCHAR(255) NOT NULL, 
+    admin_api VARCHAR(255),
+    user_api VARCHAR(255),
+    status VARCHAR(50) NOT NULL
+);

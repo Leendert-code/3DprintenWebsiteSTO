@@ -1,0 +1,419 @@
+/* style.css 
+
+colors paars #5a499a
+licht oranje #f49406
+grijs #d9d6d8
+donker oranje #f48c04
+donker grijs #a19e97
+grijs paars #6c63a6
+woestijn sand #f4b563
+donker grijs #949398
+paars achtig #837bb1
+
+
+
+*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.navigatiebar{
+  width: 100%;
+  background-color: #f4b563;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* border-radius: 20px; */
+}
+    
+header {
+  background-size: cover;
+  padding: 20px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  font-size: x-large;
+}
+
+.welkom {
+  float: right;
+  padding: 12px;
+  color: white;
+  text-decoration: solid;
+  font-size: 17px;
+  margin-right: 30px;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #f4b563;
+  overflow: auto;
+  border-radius: 4px;
+}
+
+.nav-link {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.nav-link2 {
+  float: RIGHT;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+.navbar2-nav{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.navbar2-nav a {
+  float: right;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar b {
+  float: right;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  margin-right: 30px;
+}
+
+.navbar a:hover {
+  background-color: #f49406;
+  border-radius: 4px;
+}
+
+.navbar b:hover {
+  background-color: #f49406;
+}
+
+
+.btn-primary {
+  background-color: blue;
+  border: none;
+  border-radius: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover {
+  background-color: #f49406;
+}
+
+.alert {
+  border: none;
+  border-radius: 0;
+  color: #6a6a6a;
+  background-color: #c56e37;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 0 0 0.01rem black;
+  border: none;
+}
+
+.active {
+  background-color: #c56e37;
+  border-radius: 4px;
+}
+
+
+
+.center-line {
+  position: fixed;
+  /* top: 50%; */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 1px;
+  width: 100vw;
+  background-color: black;
+  z-index: 9999;
+}
+
+.center-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100vh;
+  background-color: black;
+}
+
+.error {
+  text-align: center;
+  font-size: 2.5vmax;
+  margin-top: 3em;
+  text-rendering: bold;
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  transform: translate(-30%, -50%);
+}
+
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 1px;
+    bottom: 0;
+    width: 100%;
+    position: relative;
+    margin-top: auto;
+
+}
+
+h1{  display: flex;
+  justify-content: center;
+  color: #f4b563;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+}
+.btn-group button {
+  background-color: #f48c04;
+  color: white; /* White text */
+  padding: 3px 6px; /* Some padding */
+  border: none; /* Remove the border */
+  border-radius: 8px;
+  margin: 0 4px; /* Added margin for space between buttons */
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #f49406;
+}
+
+/* ---------------------forms style---------------------------------------------- */
+
+.form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 20px;
+
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+.form-text {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: -2ch;
+  color: #f4b563;
+  font-size: large;
+  font-style: bold;
+}
+
+.form-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 1%;
+}
+
+.form-submit {
+  background-color: #e4b37d;
+  font-size: large;
+  padding: 8px 13px; 
+  border: none; 
+  border-radius: 8px;
+
+}
+.form-submit:hover {
+  background-color: #cc8454;
+}
+
+
+/* ---------------------tabel style---------------------------------------------- */
+
+#users {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+#users td, #users th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#users tr:nth-child(even){background-color: #f2f2f2;}
+
+#users tr:hover {background-color: #ddd;}
+
+#users th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #f49406;
+  color: white;
+}
+
+
+#printer_temp {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#printer_temp td, #printer_temp th {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+
+b { 
+  font-style: bold;
+}
+
+details > summary {
+  padding: 4px;
+  width: 200px;
+  font-style: bold;
+  border: none;
+  cursor: pointer;
+}
+
+details > p {
+  padding: 4px;
+  margin: 0;
+}
+
+.buttonbox{
+  display: flex;
+  justify-content: center;
+  margin-top: 2%;
+
+}
+button {
+
+  background-color: #e4b37d;
+  font-size: large;
+  padding: 8px 13px; 
+  border: none; 
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+button:hover {
+  background-color: #cc8454;
+}
+
+/* ---------------------container style--------------------------------------------- */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Common style for both boxes */
+.box {
+  flex: 1;
+  margin: 1%;
+  border-radius: 20px;
+  width: 40%;
+  height: 50;
+}
+
+/* Box 1 specific styles */
+.box1 {
+  background: #f4b563;
+  position: relative;
+}
+
+.box1_in {
+  box-sizing: border-box;
+  width: 60%;
+  height: 80%;
+  border: 1px solid #f49406;
+  border-radius: 20px;
+  position: absolute;
+  top: 10%;
+  left: 34%;
+  color: white;
+  text-align: center;
+  overflow: auto;
+}
+
+.box1_img {
+  border-radius: 20px;
+  width: 224px;
+  height: 260px;
+  margin-left: 3%;
+  margin-top: 9%;
+  margin-bottom: 9%;
+}
+
+.box_printer_dash {
+  box-sizing: content-box;
+  background: #f4b563;
+  flex: 1;
+  margin: 1%;
+  border-radius: 20px;
+  width: 40pc;
+  height: 25pc;
+
+}
+
+
+.box_printer_dash_in {
+  box-sizing: border-box;
+  width: 80%;
+  height: 80%;
+  border: 1px solid #f49406;
+  border-radius: 20px;
+  top: 10%;
+  left: 34%;
+  margin-top: 5%;
+  margin-left: 10%;
+  color: white;
+  text-align: center;
+  overflow: auto;
+
+}

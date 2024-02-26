@@ -1,0 +1,107 @@
+{% extends 'template.html' %}
+
+{% block title %}website{% endblock %}
+
+{% block content %}
+<div id="flash-messages">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+<body>
+     {#{% comment %} dit stuk is om een nieuw account te registreren waar de gegevens naar app.py worden gestuurd en het in de database word gezet{% endcomment %}#}
+    <h1>niew account registreren</h1>
+            <div class="col col-lg-4 col-md-8 col-sm-10">
+                <form method="POST" action="">
+
+                    {{ form.hidden_tag() }}
+                    <div class="form-text">
+                    <label for="username">Gebruikersnaam:</label>
+                    </div>
+                    <div class="form">
+                    {{ form.username() }}
+                    </div>
+                    <div class="form-text">
+                    <label for="password">Wachtwoord:</label>
+                    </div>
+                    <div class="form">
+                    {{ form.password() }}
+                    </div>
+                    <div class="form-text">
+                    <label for="confirm_password">Bevestig wachtwoord:</label>
+                    </div>
+                    <div class="form">
+                    {{ form.confirm_password() }}
+                    </div>
+                    <div class="form-button">
+                    {{ form.submit(class="form-submit") }}
+                    </div>
+                </form>
+            </div>
+{# {% comment %} nu komt de tabel waarin de user gegevens worden getoond {% endcomment %} #}
+<br>
+info over rechten
+<details>
+    <summary><b>Admin rechten</b></summary>
+    <p> de gebruiker met admin rechten heeft toegang tot onder andere
+        <ul>
+        <li>admin dashboard: om gebruikers toe te voegen of aan te passen</li>
+        <li>de settings van de 3D printers</li>
+        <li>inzicht in de database</li>
+      </ul>  </p>
+  </details>
+  <details>
+  <summary><b>Super user rechten</b></summary>
+  <p> De gebruiker met Super user rechten heeft alleen toegang tot instellingen van de printers en heeft geen toegang tot <br>
+    het admin dashboard of de database.
+
+ </p>
+</details>
+<details>
+<summary><b>User rechten</b></summary>
+<p> de gebruiker met User rechten heeft aleen toegang tot een gast account bij de printers.
+ </p>
+</details>
+
+<br>
+ <h1>Accounts aanpassen</h1>
+ hier onder kun je accounts aanpassen, om een aapassing te maken selecteer je de aanpassingen die je wilt maken en druk dan op "wijzigingen toepassen" onderaan de tabel
+ <br>
+ <form method="post">
+    <table id="users">
+        <tr>
+            <th>UserID</th>
+            <th>Username</th>
+            <th>Level</th>
+            <th>Status</th>
+            <th>Delete</th>
+        </tr>
+
+        {% for item in userlist %}
+            <tr>
+                <td>{{ item.userid }}</td>
+                <td>{{ item.username }}</td>
+                <td>
+                    <select name="level_{{ item.userid }}">
+                        <option value="0" {% if item.level == 0 %} selected {% endif %}>Admin</option>
+                        <option value="1" {% if item.level == 1 %} selected {% endif %}>Super User</option>
+                        <option value="2" {% if item.level == 2 %} selected {% endif %}>User</option>
+                        <option value="5" {% if item.level == 2 %} selected {% endif %}>Debug</option>
+                    </select>
+                </td>
+                <td>{{ item.status }}</td>
+                <td>
+                    <input type="checkbox" name="delete_{{ item.userid }}">
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+<div class="buttonbox">
+    <button type="submit">wijzigingen toepassen</button>
+</div>
+</form>
+
+        </body>
+{% endblock %}
+

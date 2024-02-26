@@ -1,0 +1,83 @@
+{% extends 'template.html' %}
+
+{% block title %}website{% endblock %}
+
+{% block content %}
+
+
+
+<div id="flash-messages">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    <body>
+        <h1>Printen</h1>
+        <p><b>Address:</b> {{ address }}</p>
+        <p><b>User API:</b> {{ user_api }}</p>
+    
+        <div class="container">
+            <!-- buiten box 1 -->
+            <div class="box_printer_dash">
+                <div class="box_printer_dash_in">
+                    <p><h2>Printer info</h2></p>
+                    {% if printer_data %}
+                        {% if printer_data == "API niet correct" %}
+                            <b>De API sleutel is niet correct, meld dit bij je docent</b>
+                        {% else %}
+                            {% if printer_data.state.flags.operational %}
+                                <b>De printer is beschikbaar</b>
+                            {% else %}
+                                <b>De printer is niet beschikbaar</b>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <p>Het is niet gelukt om de printer informatie op te halen</p>
+                    {% endif %}
+    
+                    {% if printer_data and printer_data.sd %}
+                        {% if printer_data.sd.ready %}
+                            <br>  <b>De SD kaart is aanwezig</b>
+                        {% else %}
+                            <b>De SD kaart is NIET aanwezig</b>
+                        {% endif %}
+                    {% endif %}
+    
+                    {% if printer_data and printer_data.temperature %}
+                        <table id="printer_temp">
+                            <tr>
+                                <th>Tool</th>
+                                <th>temp</th>
+                                <th>target</th>
+                            </tr>
+                            <tr>
+                                <td>Nozzle</td>
+                                <td>{{ printer_data.temperature.tool0.actual if printer_data.temperature.tool0 else 'N/A' }}</td>
+                                <td>{{ printer_data.temperature.tool0.target if printer_data.temperature.tool0 else 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Bed</td>
+                                <td>{{ printer_data.temperature.bed.actual if printer_data.temperature.bed else 'N/A' }}</td>
+                                <td>{{ printer_data.temperature.bed.target if printer_data.temperature.bed else 'N/A' }}</td>
+                            </tr>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+    
+            <div class="box_printer_dash">
+                <div></div> 
+                <div class="box_printer_dash_in">
+                    <p><b>Upload hier je bestand om te printen</b></p>
+                    <form action="/action_page.php">
+                        <input type="file" id="myFile" name="filename">
+                        <br>
+                        <input type="submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+
+{% endblock %}

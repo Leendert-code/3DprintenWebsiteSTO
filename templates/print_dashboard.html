@@ -1,0 +1,126 @@
+{% extends 'template.html' %}
+
+{% block title %}website{% endblock %}
+
+{% block content %}
+<div id="flash-messages">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+<body>
+{# {% comment %} nu komt de tabel waarin de printer gegevens worden getoond {% endcomment %} #}
+
+
+<h1>niewe printer registreren</h1>
+<div class="col col-lg-4 col-md-8 col-sm-10">
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        <div class="form-text">
+            <label for="printerid">PrinterID:</label>
+        </div>
+        <div class="form">
+        {{ form.printerid(size=32) }}
+        </div>
+        <div class="form-text">
+            <label for="merk">Merk:</label>
+        </div>
+        <div class="form">
+        {{ form.merk(size=32) }}
+        </div>
+        <div class="form-text">
+            <label for="naam">Naam:</label>
+        </div>
+        <div class="form">
+        {{ form.naam(size=32) }}
+        </div>
+        <div class="form-text">
+            <label for="adres">Adres:</label>
+        </div>
+        <div class="form">
+        {{ form.adres(size=32) }}
+        </div>
+        <div class="form-text">
+            <label for="poort">Poort:</label>
+        </div>
+        <div class="form">
+        {{ form.poort(size=32) }}
+        </div>
+        <div class="form-text">
+            <label for="admin_api">Admin API:</label>
+        </div>
+        <div class="form">
+        {{ form.admin_api(size=32) }}
+        </div>
+        <div class="form-text">
+            <label for="user_api">User API:</label>
+        </div>
+        <div class="form">
+         {{ form.user_api(size=32) }}
+        </div>
+        <div class="form-button">
+            {{ form.submit(class="form-submit", id="printer_submit") }}
+        </div>
+
+    </form>
+</div>
+
+
+
+<form method="post">
+    <table id="users">
+        <tr>
+            <th>ID</th>
+            <th>PrinterID</th>
+            <th>Merk</th>
+            <th>Naam</th>
+            <th>Adres</th>
+            <th>Poort</th>
+            <th>Admin api</th>
+            <th>User api</th>
+            <th>Status</th>
+            <th>Delete</th>
+        </tr>
+
+
+        {% for item in printerlist %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>                    
+                    <input type="text" name="printerid_{{ item.id }}" value="{{ item.printerid }}">
+                </td>
+                <td>{{ item.merk }}</td>
+                <td>{{ item.naam }}</td>
+                <td>
+                    <input type="text" name="adres_{{ item.id }}" value="{{ item.adres }}">
+                </td>
+                <td>
+                    <input type="text" name="poort_{{ item.id }}" value="{{ item.poort }}">
+                </td>
+                <td>
+                    <input type="text" name="admin_api_{{ item.id }}" value="{{ item.admin_api }}">
+                </td>
+                <td>
+                    <input type="text" name="user_api_{{ item.id }}" value="{{ item.user_api }}">
+                </td>
+                <td>
+                    <select name="status_{{ item.id }}">
+                        <option value="0" {% if item.status == '0' %} selected {% endif %}>Inctive</option>
+                        <option value="1" {% if item.status == '1' %} selected {% endif %}>Active</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="checkbox" name="delete_{{ item.id }}">
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+<div class="buttonbox">
+    <button type="submit">wijzigingen toepassen</button>
+</div>
+</form>
+        </body>
+
+{% endblock %}

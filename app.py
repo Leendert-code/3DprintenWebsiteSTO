@@ -5,9 +5,7 @@ from wtforms.validators import DataRequired, Length, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
-from datetime import datetime
 from werkzeug.security import generate_password_hash
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 
 

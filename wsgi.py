@@ -6,7 +6,10 @@ python_home = '/usr/bin/python'
 sys.executable = python_home
 # app.wsgi
 
-from app import app as application
+from app import app
+
+if __name__ == "__main__":
+    app.run()
 
 # Debugging information
 print("Python Executable:", sys.executable)

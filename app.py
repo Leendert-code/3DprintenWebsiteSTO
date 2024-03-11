@@ -16,8 +16,8 @@ import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'GOMAAAAAAARUSSSSSS'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://gomarus:G0marus@172.23.145.240:3306/3dprinten'  # Change this to your database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Gomarus:Gomarus.sto@localhost:3306/3dprinten'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://gomarus:G0marus@172.23.145.240:3306/3dprinten'  # Change this to your database URI
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Gomarus:Gomarus.sto@localhost:3306/3dprinten'  
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)

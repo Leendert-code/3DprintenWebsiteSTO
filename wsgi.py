@@ -4,12 +4,8 @@ sys.path.insert(0, '/var/www/flask')
 
 python_home = '/usr/bin/python'
 sys.executable = python_home
-# app.wsgi
 
-from app import app
-
-if __name__ == "__main__":
-    app.run()
+from app import app as application  # Rename app to application for Gunicorn
 
 # Debugging information
 print("Python Executable:", sys.executable)

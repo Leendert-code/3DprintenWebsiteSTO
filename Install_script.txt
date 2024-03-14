@@ -1,0 +1,225 @@
+#!/bin/bash
+
+#_____________________________ netwerk variabele ________________________________
+netwerk="
+interface wlan0
+static ip_address=172.23.145.240/24
+static routers=172.23.144.1 
+static domain_name_servers=208.67.222.222,208.67.220.220,8.8.8.8
+
+interface eth0
+static ip_address=172.23.145.240/24
+static routers=172.23.144.1 
+static domain_name_servers=208.67.222.222,208.67.220.220,8.8.8.8
+"
+
+#_____________________________ NGINX Site variabele ________________________________
+nginx_site_av="server {
+    listen 80;
+    server_name 3dprintensto.gomaruscollege http://3dprintensto.gomaruscollege;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/pi/3DprintenWebsiteSTO/3DprintenWebsiteSTO.sock;
+    }
+}
+"
+
+#_____________________________ PrintWebsite service variabele________________________________
+printwebsite_service="
+[Unit]
+Description=Gunicorn instance to serve de printwebsite
+After=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/home/pi/3DprintenWebsiteSTO
+Environment=\"PATH=/home/pi/3DprintenWebsiteSTO/venv/bin\"
+ExecStart=/home/pi/3DprintenWebsiteSTO/venv/bin/gunicorn --workers 3 --bind unix:3DprintenWebsiteSTO.sock -m 007 wsgi
+
+[Install]
+WantedBy=multi-user.target
+"
+
+#_____________________________ Crontab website update variabele ________________________________
+
+cronjob="#!/bin/bash
+
+cd /home/pi/3DPrintwebsitesto
+git pull -y"
+
+
+#_____________________________ Start van het configureren van het netwerk en het installeren van de nodige dingen ________________________________
+
+echo "$netwerk" >> /etc/dhcpcd.conf
+cd /home/pi
+
+
+# Maak de mappen aan
+# mkdir /home/pi/3DPrintWebsite
+mkdir -p /home/pi/Debug
+mkdir -p /home/pi/Scripts
+
+
+cat <<EOF > /home/pi/Scripts/install_sql.sh
+$install_sql
+EOF
+
+cat <<EOF > /home/pi/Scripts/webupdate.sh
+$cronjob
+EOF
+
+cd /home/pi/Scripts || exit
+chmod +x webupdate.sh
+
+cd /home/pi || exit
+
+echo "De mappen zijn gemaakt" >> /home/pi/Debug/installtxt
+
+# installeer de juiste packages
+sudo apt install mariadb-server -y
+sudo apt install nginx -y
+sudo apt install git -y
+sudo apt install ufw -y
+sudo apt install python3-venv -y
+sudo apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools -y
+
+
+
+cd /home/pi
+git clone https://github.com/Leendert-code/3DprintenWebsiteSTO.git
+
+# zorg dat de firewall nginx toelaat
+sudo ufw allow 'Nginx HTTP'
+
+# laat de status zien van nginx
+# systemctl status nginx
+sudo systemctl enable nginx
+
+# stop nginx zodat we de configuratie kunnen aanpassen
+sudo systemctl stop nginx
+
+#update en upgrade de firmware
+sudo apt update -y
+sudo apt upgrade -y
+
+sudo apt-get install python3-dev default-libmysqlclient-dev build-essential pkg-config -y
+
+sudo apt update -y
+sudo apt upgrade -y
+
+pip install mysqlclient
+
+# verwijder de default configuratie en voeg hem opnieuw toe
+sudo rm -r /etc/nginx/sites-available/default
+sudo bash -c "echo \"$nginx_site_av\" > /etc/nginx/sites-available/default"
+
+
+#_____________________________ het installeren van de print service voor de koppeling tussen flask en nginx ________________________________
+
+# maak de local folder voor de website
+cd /home/pi/3DprintenWebsiteSTO
+python3 -m venv venv
+source venv/bin/activate
+pip install wheel
+pip install gunicorn flask
+pip install flask_wtf
+pip install flask_sqlalchemy
+pip install flask_bcrypt
+pip install flask_login
+pip install werkzeug
+pip install wtforms
+pip install requests
+pip install mysqlclient
+
+
+sudo ufw allow 5000
+deactivate
+
+# maak de service om de website te starten
+sudo bash -c "echo \"$printwebsite_service\" > /etc/systemd/system/3DPrintwebsite.service"
+sudo systemctl start 3DPrintwebsite
+sudo systemctl enable 3DPrintwebsite
+
+
+
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled
+sudo systemctl restart nginx
+
+echo "De firrewall regels worden nu aangepasts"
+sleep 3
+
+
+sudo ufw allow 22
+sudo ufw delete allow 5000
+sudo ufw allow 'Nginx Full'
+sudo ufw enable -y
+sudo ufw reload
+
+#_____________________________ Cron taken maken om 1 keer in de maand te updaten________________________________
+
+# Add a cron job for updating packages
+(crontab -l 2>/dev/null; echo "0 0 * * * /home/pi/script/cronjob.sh") | crontab -
+
+
+# Add a cron job for running job.sh as root
+sudo crontab -l > temp_cron
+echo "0 0 1 * * apt update && apt upgrade && reboot" >> temp_cron
+sudo crontab temp_cron
+rm temp_cron
+
+
+#_____________________________ Het installeren van MySQL ________________________________
+
+echo "De installatie stapen voor het maken van de mysql database worden nu gestart. Voer de stappen zoals in de handleing geschreven uit."
+echo "Het wachtwoord moet G0marus.STO zijn"
+sleep 10
+
+# Stap 1: Voer mysql_secure_installation uit
+sudo mysql_secure_installation
+
+# Stap 2: Maak een wachtwoord aan
+sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password IDENTIFIED BY 'G0marus.STO'"
+
+
+# Step 3: Execute SQL queries
+sudo mysql -u root -p <<EOF
+CREATE DATABASE 3dprinten;
+USE 3dprinten;
+CREATE TABLE IF NOT EXISTS login (
+    userid INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    level INT NOT NULL,
+    status VARCHAR(50) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS printers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    printerid VARCHAR(255) NOT NULL, 
+    merk VARCHAR(255) NOT NULL, 
+    naam VARCHAR(255) NOT NULL,
+    adres VARCHAR(255) NOT NULL, 
+    poort VARCHAR(255) NOT NULL, 
+    admin_api VARCHAR(255),
+    user_api VARCHAR(255),
+    status VARCHAR(50) NOT NULL
+);
+CREATE USER 'gomarus'@'172.23.145.%' IDENTIFIED BY 'G0marus';
+GRANT ALL PRIVILEGES ON 3dprinten.* TO 'gomarus'@'172.23.145.%' IDENTIFIED BY 'G0marus' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+INSERT INTO login (username, password, level, status)
+VALUES ('admin', '\$2b\$12\$50bPCTjRwIL1vfaY4hzcPu3btrQfe4MepEk1qWZfmaJ.hS9AWOZNW', 0, 'active');
+EOF
+
+# Step 4: Update mariadb configuration
+sudo sed -i 's/bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
+
+# Reload the database
+sudo systemctl restart mariadb
+
+echo "Het is gelukt, het systeem word nu opnieuw opgestart."
+
+sleep 10
+
+sudo reboot

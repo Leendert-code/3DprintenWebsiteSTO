@@ -255,13 +255,16 @@ def printen(printer_id):
     if address is None:
         return "Printer niet gevonden", 404
     
+
     # Construct the URL using the address, port, and user_api
     print("URL:", user_api)
     url = f'http://{address}:{poort}/api/printer'
     params = {'history': 'true', 'limit': 2}
     headers = {'X-Api-Key': user_api}
-    print("URL:", url)
-    response = requests.get(url, params=params, headers=headers)
+    constructed_url = url + '?' + '&'.join([f"{key}={value}" for key, value in params.items()])
+    print("Constructed URL:", constructed_url)
+    response = requests.get(constructed_url, headers=headers)
+
     
     # Check if the request was successful
     if response.status_code == 200:
@@ -278,7 +281,7 @@ def printen(printer_id):
         print("De API sleutel is niet correct")
     
     # Render the printen.html template, passing the retrieved data to it
-    return render_template('printen.html', printer_id=printer_id,user_api=user_api, address=address, printer_data=printer_data, username=current_user.username, user_level=current_user.level, logged_in=True)
+    return render_template('printen.html', constructed_url=constructed_url, printer_id=printer_id,user_api=user_api, address=address, printer_data=printer_data, username=current_user.username, user_level=current_user.level, logged_in=True)
     
     
 @app.route('/upload', methods=['POST'])

@@ -34,6 +34,9 @@
                         {% endif %}
                     {% else %}
                         <p>Het is niet gelukt om de printer informatie op te halen</p>
+                        <form action="/restart_octoprint" method="post">
+                            <button type="submit">Restart OctoPrint</button>
+                        </form>
                     {% endif %}
     
                     {% if printer_data and printer_data.sd %}

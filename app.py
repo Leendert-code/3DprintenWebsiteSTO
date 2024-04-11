@@ -283,6 +283,21 @@ def printen(printer_id):
     # Render the printen.html template, passing the retrieved data to it
     return render_template('printen.html', constructed_url=constructed_url, printer_id=printer_id,user_api=user_api, address=address, printer_data=printer_data, username=current_user.username, user_level=current_user.level, logged_in=True)
     
+
+@app.route('/restart_octoprint', methods=['POST'])
+def printen(printer_id):
+    address, user_api, poort = get_printer_data(printer_id)
+
+
+    url = f'http://{address}:{poort}/api/system/commands/core/restart'
+    headers = {'X-Api-Key': user_api}
+    response = requests.post(url, headers=headers)
+    
+    if response.status_code == 204:  # Successful POST request (204 No Content)
+        return redirect(url_for('home'))  # Redirect back to the homepage or any other desired page
+    else:
+        return "Failed to restart OctoPrint"  # Handle error case
+
     
 @app.route('/upload', methods=['POST'])
 def upload_file():

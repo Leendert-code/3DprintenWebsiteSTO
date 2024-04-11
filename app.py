@@ -285,7 +285,7 @@ def printen(printer_id):
     
 
 @app.route('/restart_octoprint', methods=['POST'])
-def printen(printer_id):
+def restart_octoprint(printer_id):
     address, user_api, poort = get_printer_data(printer_id)
 
 
